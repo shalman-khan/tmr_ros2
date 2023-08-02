@@ -142,11 +142,20 @@ void TmSvrRos2::publish_fbs()
     auto &pose = pm.fbs_msg.tool_pose;
     tf2::Quaternion quat;
     quat.setRPY(pose[3], pose[4], pose[5]);
+
     pm.tool_pose_msg.header.stamp = pm.joint_msg.header.stamp;
     pm.tool_pose_msg.pose.position.x = pose[0];
     pm.tool_pose_msg.pose.position.y = pose[1];
     pm.tool_pose_msg.pose.position.z = pose[2];
-    pm.tool_pose_msg.pose.orientation = tf2::toMsg(quat);
+
+    geometry_msgs::msg::Quaternion conv_quat;
+    conv_quat.x = quat.x();
+    conv_quat.y = quat.y();
+    conv_quat.z = quat.z();
+    conv_quat.w = quat.w();
+
+
+    pm.tool_pose_msg.pose.orientation = conv_quat;
     pm.tool_pose_pub->publish(pm.tool_pose_msg);
 }
 void TmSvrRos2::fake_publisher()

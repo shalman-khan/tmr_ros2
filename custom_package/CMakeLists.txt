@@ -49,6 +49,7 @@ ament_target_dependencies(sub_img
 "std_msgs"
 "OpenCV"
 "ament_index_cpp"
+"rclcpp_components"
 )
 
 install(TARGETS
