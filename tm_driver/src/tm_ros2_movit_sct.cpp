@@ -103,9 +103,14 @@ void TmRos2SctMoveit::execute_traj(
   }
 
   if (!is_fake_) {
+    print_info("TRUE TRAJECTORY--------()");
+
     iface_.run_pvt_traj(*pvts);
+
   }
   else {
+    print_info("FAKE TRAJECTORY--------()");
+
     iface_.fake_run_pvt_traj(*pvts);
   }
   if (rclcpp::ok()) {

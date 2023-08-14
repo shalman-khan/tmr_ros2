@@ -20,14 +20,14 @@ int main(int argc, char **argv)
   request->motion_type = tm_msgs::srv::SetPositions::Request::PTP_J;
   request->positions.push_back(0);
   request->positions.push_back(0);
-  request->positions.push_back(1.58);
   request->positions.push_back(0);
-  request->positions.push_back(1.58);
   request->positions.push_back(0);
-  request->velocity = 0.4;//rad/s
+  request->positions.push_back(0);
+  request->positions.push_back(0);
+  request->velocity = 3.0;//rad/s
   request->acc_time = 0.2;
   request->blend_percentage = 10;
-  request->fine_goal  = false;
+  request->fine_goal  = true;
 
   while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
