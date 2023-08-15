@@ -4,6 +4,7 @@ The package is to teleoperate a tm_robot arm using joint angles
 
 ![servo_input](https://github.com/shalman-khan/tmr_ros2/blob/humble-shalman/figures/Keyboard_control.png)
 ![moveit_config](https://github.com/shalman-khan/tmr_ros2/blob/humble-shalman/figures/moveit_servo.png)
+![arch](https://github.com/shalman-khan/tmr_ros2/blob/humble-shalman/figures/arch_int_network_servo.drawio.png)
 
 
 <br>
