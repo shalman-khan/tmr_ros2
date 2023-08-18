@@ -22,12 +22,12 @@
       <selfCollide>true</selfCollide>
     </gazebo>
 
-    <gazebo>
-      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <!-- <gazebo>
+      <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
         <robotNamespace>/${ns}</robotNamespace>
-        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        <robot_sim_type>gazebo_ros2_control/DefaultRobotHWSim</robot_sim_type>
       </plugin>
-    </gazebo>
+    </gazebo> -->
 
   </xacro:macro>
 
