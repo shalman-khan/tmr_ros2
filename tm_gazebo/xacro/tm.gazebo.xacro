@@ -37,9 +37,9 @@
     </gazebo>
 
     <gazebo>
-      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+        <parameters>$(find tm_gazebo_cf)/config/ros2_controllers.yaml</parameters>
         <robotNamespace>/${ns}</robotNamespace>
-        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       </plugin>
     </gazebo>
 
