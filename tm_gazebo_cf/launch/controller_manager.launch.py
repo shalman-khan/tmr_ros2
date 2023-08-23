@@ -14,7 +14,7 @@ doc = xacro.parse(open("/home/rosi/workspaces/techman_robot/src/tmr_ros2/tm_gaze
 xacro.process_doc(doc)
 
 robot_description = {'robot_description': doc.toxml()}
-
+print(robot_description)
 def generate_launch_description():
 
 
@@ -45,15 +45,23 @@ def generate_launch_description():
         ]
     )
 
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+    )
+
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[robot_description, robot_controllers],
+        arguments=["tmr_arm_controller"],
         output="both",
     ) 
 
     return LaunchDescription([
         gazebo,
         node_robot_state_publisher,
-        spawn_entity
+        spawn_entity,
+        joint_state_broadcaster_spawner
+        # control_node
     ])

@@ -6,8 +6,8 @@ controller_manager:
     
     tmr_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
-
-
+      # type: forward_command_controller/ForwardCommandController
+ 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 

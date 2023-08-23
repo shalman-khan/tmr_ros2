@@ -126,7 +126,7 @@ private:
   double joint_vel_cmd_;
 };
 
-KeyboardServo::KeyboardServo() : frame_to_publish_(BASE_FRAME_ID), joint_vel_cmd_(1.0)
+KeyboardServo::KeyboardServo() : frame_to_publish_(BASE_FRAME_ID), joint_vel_cmd_(0.01)
 {
   nh_ = rclcpp::Node::make_shared("servo_keyboard_input");
 
