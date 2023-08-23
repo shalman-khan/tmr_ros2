@@ -17,17 +17,18 @@ int main(int argc, char **argv)
     node->create_client<tm_msgs::srv::SetPositions>("set_positions");
   
   auto request = std::make_shared<tm_msgs::srv::SetPositions::Request>();
-  request->motion_type = tm_msgs::srv::SetPositions::Request::PTP_J;
-  request->positions.push_back(0);
-  request->positions.push_back(0);
-  request->positions.push_back(0);
-  request->positions.push_back(0);
-  request->positions.push_back(0);
-  request->positions.push_back(0);
+  request->motion_type = tm_msgs::srv::SetPositions::Request::PTP_T;
+  request->positions.push_back(-0.20047640991210938);
+  request->positions.push_back(-0.5539343872070313);
+  request->positions.push_back(0.5948548583984375);
+  request->positions.push_back(1.4855205);
+  request->positions.push_back(-0.4320725);
+  request->positions.push_back(0.4953699);
   request->velocity = 3.0;//rad/s
-  request->acc_time = 0.2;
+  request->acc_time = 1.0;
   request->blend_percentage = 10;
   request->fine_goal  = true;
+  
 
   while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {

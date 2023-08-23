@@ -16,6 +16,7 @@
 //#include "tm_msgs/srv/set_payload.hpp"
 #include "tm_msgs/srv/set_positions.hpp"
 #include "tm_msgs/srv/ask_sta.hpp"
+#include <trajectory_msgs/msg/joint_trajectory.hpp>
 
 
 class TmSctRos2
@@ -48,6 +49,12 @@ public:
     rclcpp::Service<tm_msgs::srv::SetPositions>::SharedPtr set_positions_srv_;
 
     rclcpp::Service<tm_msgs::srv::AskSta>::SharedPtr ask_sta_srv_;
+
+    rclcpp::Subscription<trajectory_msgs::msg::JointTrajectory>::SharedPtr servo_ctrl_;
+
+    std::vector<double> previous_positions;  
+
+
     std::unique_ptr<ListenNodeConnection> listenNodeConnection;
     bool is_fake_;
     std::vector<std::string> jns_;
@@ -76,6 +83,9 @@ public:
     bool set_positions(
         const std::shared_ptr<tm_msgs::srv::SetPositions::Request> req,
         std::shared_ptr<tm_msgs::srv::SetPositions::Response> res);
+
+    void servo_ctrl(
+        trajectory_msgs::msg::JointTrajectory::SharedPtr msg);
 
     bool ask_sta(
         const std::shared_ptr<tm_msgs::srv::AskSta::Request> req,

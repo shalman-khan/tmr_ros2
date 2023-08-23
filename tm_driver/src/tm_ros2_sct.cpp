@@ -46,6 +46,12 @@ TmSctRos2::TmSctRos2(rclcpp::Node::SharedPtr node, TmDriver &iface, bool is_fake
     ask_sta_srv_ = node->create_service<tm_msgs::srv::AskSta>(
         "ask_sta", std::bind(&TmSctRos2::ask_sta, this,
         std::placeholders::_1, std::placeholders::_2));
+
+    servo_ctrl_ = node->create_subscription<trajectory_msgs::msg::JointTrajectory>(
+        "/tmr_arm_controller/joint_trajectory",10, std::bind(&TmSctRos2::servo_ctrl, this, 
+        std::placeholders::_1));
+
+
 }
 
 TmSctRos2::~TmSctRos2(){
@@ -101,6 +107,7 @@ bool TmSctRos2::send_script(
     res->ok = rb;
     return rb;
 }
+
 
 bool TmSctRos2::set_event(
     const std::shared_ptr<tm_msgs::srv::SetEvent::Request> req,
@@ -160,6 +167,43 @@ bool TmSctRos2::set_positions(
     res->ok = rb;
     return rb;
 }
+double roundToTwoDecimalPlaces(double value) {
+    return std::round(value * 100.0) / 100.0;
+}
+
+void TmSctRos2::servo_ctrl(trajectory_msgs::msg::JointTrajectory::SharedPtr msg) {
+
+    std::shared_ptr<tm_msgs::srv::SetPositions::Request> request;
+
+    std::vector<double> rounded_positions;
+    for (const auto& pos : msg->points[0].positions) {
+        rounded_positions.push_back(roundToTwoDecimalPlaces(pos));
+    }
+
+    // Check if positions have changed since the last iteration
+    if (rounded_positions != previous_positions) {
+        request->motion_type = tm_msgs::srv::SetPositions::Request::PTP_J;
+        request->positions.push_back(rounded_positions[0]);
+        request->positions.push_back(rounded_positions[1]);
+        request->positions.push_back(rounded_positions[2]);
+        request->positions.push_back(rounded_positions[3]);
+        request->positions.push_back(rounded_positions[4]);
+        request->positions.push_back(rounded_positions[5]);
+        request->velocity = 3.0;  // rad/s
+        request->acc_time = 0.2;
+        request->blend_percentage = 10;
+        request->fine_goal = false;
+
+        iface_.set_joint_pos_PTP(request->positions, request->velocity, request->acc_time, request->blend_percentage, request->fine_goal);
+        print_info("TM_ROS Servo Ctrl Message Sent");
+
+        // Update the previous_positions with the current positions
+        previous_positions = rounded_positions;
+    } else {
+        print_info("TM_ROS Servo Ctrl: Positions unchanged, skipping...");
+    }
+}
+
 bool TmSctRos2::ask_sta(
         const std::shared_ptr<tm_msgs::srv::AskSta::Request> req,
         std::shared_ptr<tm_msgs::srv::AskSta::Response> res){
